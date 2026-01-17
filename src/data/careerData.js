@@ -463,14 +463,14 @@ export const careerData = [
                         title: "Mechatronics Engineer",
                         description: "Hybrid of Mechanical and Electronics.",
                         roadmap: ["Control Systems", "Sensor Fusion", "Industrial Robotics"],
-                        resources: [{ name: "Learn Engineering", link: "https://www.youtube.com/@Lesics" }]
+                        resources: [{ name: "Learn Engineering", link: "https://www.youtube.com/@LearningEngineering" }]
                     },
                     {
                         id: "hvac_btech",
                         title: "HVAC Engineer",
                         description: "Designing massive cooling/heating systems.",
                         roadmap: ["Psychrometrics", "ASHRAE standards", "Duct design"],
-                        resources: [{ name: "The Engineering Mindset", link: "https://www.youtube.com/@TheEngineeringMindset" }]
+                        resources: [{ name: "The Engineering Mindset", link: "https://www.youtube.com/@EngineeringMindset" }]
                     }
                 ]
             },
@@ -526,7 +526,7 @@ export const careerData = [
                         title: "Power Systems Engineer",
                         description: "Managing city-wide power grids.",
                         roadmap: ["Load Flow analysis", "Relay protection", "Smart Grid training"],
-                        resources: [{ name: "Electrical4U", link: "https://www.youtube.com/@electrical4u" }]
+                        resources: [{ name: "Electrical4U", link: "https://www.youtube.com/@electrical4you" }]
                     },
                     {
                         id: "ev_designer_btech",
@@ -631,7 +631,7 @@ export const careerData = [
                         title: "Media Journalist",
                         description: "Reporting and writing for news outlets.",
                         roadmap: ["Mass Communication basics", "Internship at News House", "Digital Media training"],
-                        resources: [{ name: "Media Mentor Guide", link: "https://www.youtube.com/@MediaMentorPoojaGupta" }]
+                        resources: [{ name: "Media Mentor Guide", link: "https://www.youtube.com/@MEDIAMENTOR" }]
                     },
                     {
                         id: "content_writer",
@@ -701,7 +701,7 @@ export const careerData = [
                         title: "Plant Mechanic",
                         description: "Fixing industrial equipment in mills.",
                         roadmap: ["Machine Repair Specialization", "Safety protocol training", "Troubleshooting exp"],
-                        resources: [{ name: "Yes Yen Industrial", link: "https://www.youtube.com/@YesYenMechanical" }]
+                        resources: [{ name: "Yes Yen Industrial", link: "https://www.youtube.com/@YesYenGraphiTech" }]
                     }
                 ]
             },
@@ -715,7 +715,7 @@ export const careerData = [
                         title: "ARC/TIG Welder",
                         description: "Precision welding for advanced machinery.",
                         roadmap: ["ITI Welder", "AWS Certification", "GMAW/GTAW training"],
-                        resources: [{ name: "Weld.com", link: "https://www.youtube.com/@Weld.com" }]
+                        resources: [{ name: "Weld.com", link: "https://www.youtube.com/@Welddotcom" }]
                     },
                     {
                         id: "underwater_welder",

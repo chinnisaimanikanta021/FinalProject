@@ -1,12 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
 :root {
-  --bg-color: #f0f4f8;
-  --text-color: #1e293b;
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
-  --accent-color: #2563eb;
-  --accent-hover: #1d4ed8;
-  --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  /* Dynamic 3D Inspired Color Palette */
+  --bg-color: #0d0f1a;
+  /* Deep space dark */
+  --text-color: #e2e8f0;
+  --text-muted: #94a3b8;
+
+  /* Glass and 3D Surfaces */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
+
+  /* Primary Accents */
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-teal: #14b8a6;
+  --accent-pink: #ec4899;
+
+  /* Neon Glows */
+  --glow-blue: 0 0 20px rgba(59, 130, 246, 0.5);
+  --glow-purple: 0 0 20px rgba(139, 92, 246, 0.5);
+  --glow-teal: 0 0 20px rgba(20, 184, 166, 0.5);
+
+  /* 3D Shadows */
+  --shadow-3d-base:
+    0px 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0px 1px 1px rgba(255, 255, 255, 0.1),
+    inset 0px -2px 5px rgba(0, 0, 0, 0.3);
+  --shadow-3d-hover:
+    0px 20px 40px rgba(0, 0, 0, 0.8),
+    0px 5px 15px rgba(0, 0, 0, 0.4),
+    inset 0px 2px 2px rgba(255, 255, 255, 0.2),
+    inset 0px -2px 5px rgba(0, 0, 0, 0.4);
+  --shadow-inner: inset 0px 4px 10px rgba(0, 0, 0, 0.4);
+
+  --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Outfit', system-ui, sans-serif;
 }
 
 * {
@@ -20,8 +50,12 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   min-height: 100vh;
-  /* Light Gradient Background */
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  /* Fluid Mesh Gradient Background */
+  background:
+    radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%),
+    radial-gradient(circle at 50% 80%, rgba(20, 184, 166, 0.1), transparent 25%);
+  background-color: #0b0f19;
   background-attachment: fixed;
   overflow-x: hidden;
 }
@@ -29,6 +63,9 @@ body {
 button {
   cursor: pointer;
   font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 a {
@@ -36,71 +73,229 @@ a {
   color: inherit;
 }
 
-/* Glassmorphism Utilities */
+/* 3D Glass Panel */
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  box-shadow: var(--glass-shadow);
-  transition: all 0.3s ease;
+  border-top: 1px solid var(--glass-highlight);
+  border-left: 1px solid var(--glass-highlight);
+  border-radius: 24px;
+  box-shadow: var(--shadow-3d-base);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle inner glow pseudo-element */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+  pointer-events: none;
 }
 
 .glass-panel:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.1);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: var(--shadow-3d-hover);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
+/* Modern Container */
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
 }
 
-/* Typography */
+/* Typography Enhancements */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-display);
+}
+
 h1 {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 2rem;
-  background: linear-gradient(to right, #2563eb, #7c3aed);
+  background: linear-gradient(135deg, #60a5fa, #c084fc, #2dd4bf);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  letter-spacing: -1px;
 }
 
 h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #334155;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #f8fafc;
+  letter-spacing: -0.5px;
 }
 
 h3 {
-  font-size: 1.4rem;
-  color: #0f172a;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 0.75rem;
 }
 
 p {
-  color: #475569;
-  line-height: 1.6;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 1.05rem;
 }
 
-/* Custom Scrollbar */
+/* 3D Button Utility */
+.btn-3d {
+  position: relative;
+  padding: 12px 24px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%), var(--accent-blue);
+  box-shadow:
+    0 4px 0 #1d4ed8,
+    /* 3D bottom edge */
+    0 5px 15px rgba(37, 99, 235, 0.4),
+    /* Glow */
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  /* Top highlight */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 14px;
+  transform: translateY(0);
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #1d4ed8,
+    0 8px 20px rgba(37, 99, 235, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 #1d4ed8,
+    0 2px 5px rgba(37, 99, 235, 0.4),
+    inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom 3D Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #0f172a;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 5px;
+  background: linear-gradient(180deg, #475569, #334155);
+  border-radius: 6px;
+  border: 2px solid #0f172a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: linear-gradient(180deg, #64748b, #475569);
+}
+
+/* Utility Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Inputs & Form Elements (3D inset effect) */
+input,
+textarea,
+select {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-inner);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  font-family: var(--font-main);
+  transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.4), var(--glow-blue);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  .glass-panel {
+    padding: 20px !important;
+  }
+
+  /* Make 3D buttons slightly smaller on mobile */
+  .btn-3d {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  /* App layout fixes for narrow screens */
+  .app-container main {
+    padding-bottom: 40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .glass-panel {
+    padding: 16px !important;
+  }
+
+  /* Hide some breadcrumbs on very small screens */
+  .breadcrumb-text-hide-mobile {
+    display: none !important;
+  }
 }

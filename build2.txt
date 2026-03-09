@@ -1,0 +1,15 @@
+
+> career-path-website@0.0.0 build
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 15 modules transformed.
+x Build failed in 673ms
+error during build:
+Could not resolve "../data/careerData" from "src/App.jsx"
+file: D:/saiproject/CareerPath/src/App.jsx
+    at getRollupError (file:///D:/saiproject/CareerPath/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///D:/saiproject/CareerPath/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///D:/saiproject/CareerPath/node_modules/rollup/dist/es/shared/node-entry.js:21710:24)
+    at file:///D:/saiproject/CareerPath/node_modules/rollup/dist/es/shared/node-entry.js:21670:26

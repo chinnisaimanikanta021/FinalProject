@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, X, Bot, User, ArrowRight, Sparkles } from 'lucide-react';
+import { Send, X, Bot, User, ArrowRight, Sparkles, ClipboardCheck } from 'lucide-react';
 import { careerData } from '../data/careerData';
 
-const CareerBot = ({ isOpen, setIsOpen }) => {
+const CareerBot = ({ isOpen, setIsOpen, currentContext }) => {
     const [messages, setMessages] = useState([
         { role: 'bot', text: 'Hi! I am your AI Career Assistant. How can I help you find your dream path today?' }
     ]);
     const [input, setInput] = useState('');
+    const [isInterviewMode, setIsInterviewMode] = useState(false);
+    const [interviewStep, setInterviewStep] = useState(0);
+    const [interviewData, setInterviewData] = useState([]);
     const chatEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -19,7 +22,38 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
         }
     }, [messages, isOpen]);
 
+    const startInterview = () => {
+        if (!currentContext) return;
+
+        setIsInterviewMode(true);
+        setInterviewStep(0);
+
+        const questions = [
+            `What interests you most about a career as a ${currentContext.title}?`,
+            `Are you familiar with skills like ${currentContext.roadmap?.[0] || 'the fundamentals'}? Can you explain what you know?`,
+            `How do you plan to tackle learning ${currentContext.roadmap?.[1] || 'advanced topics'}?`,
+        ];
+
+        setInterviewData(questions);
+
+        setMessages(prev => [...prev, {
+            role: 'bot',
+            text: `🚀 Success! Starting a Mock Interview for ${currentContext.title}. I will ask you 3 questions to test your readiness. First question: ${questions[0]}`
+        }]);
+    };
+
     const generateResponse = (query) => {
+        if (isInterviewMode) {
+            const nextStep = interviewStep + 1;
+            if (nextStep < interviewData.length) {
+                setInterviewStep(nextStep);
+                return `Interesting! Next question: ${interviewData[nextStep]}`;
+            } else {
+                setIsInterviewMode(false);
+                return `Great job! Interview complete for ${currentContext.title}. Based on your responses, you show great enthusiasm! I recommend focusing on the resources listed in the job details to strengthen your technical knowledge. You scored a 'Ready to Learn' grade! 🌟`;
+            }
+        }
+
         const q = query.toLowerCase();
 
         // Keyword based search in data
@@ -40,7 +74,7 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
         if (suggestions.length > 0) {
             const top = suggestions[0];
             if (top.type === 'job') {
-                return `I found a matching career: ${top.title} in the ${top.branch} field! You can find it in the B.Tech or Diploma sections. Would you like to see the roadmap?`;
+                return `I found a matching career: ${top.title} in the ${top.branch} field! Would you like to see the roadmap?`;
             }
             return `I see you are interested in ${top.title}. That is a great choice! You can find detailed jobs for this branch in the ${top.edu} category.`;
         }
@@ -49,11 +83,7 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
             return "Hello! I am your career guide. You can ask me things like 'What can I do after Mechanical?' or 'Jobs in CSE'. How can I help?";
         }
 
-        if (q.includes('job') || q.includes('salary') || q.includes('career')) {
-            return "I can help you explore 50+ job roles across CSE, ECE, Civil, and Mechanical. Just tell me what branch interestes you!";
-        }
-
-        return "I'm not sure I understand. Try asking about a specific branch like 'Civil Engineers' or 'Software Jobs'.";
+        return "I'm here to help with your career! You can explore the roadmap or ask me about specific roles. If you're viewing a specific job, I can even conduct a Mock Interview for you!";
     };
 
     const handleSend = (e) => {
@@ -62,11 +92,13 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
 
         const userMessage = { role: 'user', text: input };
         setMessages(prev => [...prev, userMessage]);
+
+        const currentInput = input;
         setInput('');
 
         // Simulate bot thinking
         setTimeout(() => {
-            const botResponse = { role: 'bot', text: generateResponse(input) };
+            const botResponse = { role: 'bot', text: generateResponse(currentInput) };
             setMessages(prev => [...prev, botResponse]);
         }, 600);
     };
@@ -75,7 +107,6 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
 
     return (
         <div style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 1000, fontFamily: 'inherit' }}>
-            {/* Bot Window */}
             <div className="glass-panel" style={{
                 width: '380px',
                 height: '550px',
@@ -85,7 +116,6 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
                 animation: 'slideUp 0.3s ease-out',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.1)'
             }}>
-                {/* Header */}
                 <div style={{
                     padding: '20px',
                     background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
@@ -100,13 +130,12 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
                         </div>
                         <div>
                             <div style={{ fontWeight: '700', fontSize: '1rem' }}>AI Career Bot</div>
-                            <div style={{ fontSize: '0.7rem', opacity: 0.9 }}>Always Active</div>
+                            <div style={{ fontSize: '0.7rem', opacity: 0.9 }}>{isInterviewMode ? 'Interview Mode' : 'Always Active'}</div>
                         </div>
                     </div>
                     <X size={20} style={{ cursor: 'pointer' }} onClick={() => setIsOpen(false)} />
                 </div>
 
-                {/* Messages */}
                 <div style={{
                     flex: 1,
                     padding: '20px',
@@ -154,12 +183,38 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
                     <div ref={chatEndRef} />
                 </div>
 
-                {/* Input */}
+                {/* Interview Context Button */}
+                {currentContext && !isInterviewMode && (
+                    <div style={{ padding: '0 20px 10px 20px' }}>
+                        <button
+                            onClick={startInterview}
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                background: '#f0f9ff',
+                                color: '#0369a1',
+                                border: '1px solid #bae6fd',
+                                borderRadius: '10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                cursor: 'pointer',
+                                fontWeight: '600',
+                                fontSize: '0.85rem'
+                            }}
+                        >
+                            <ClipboardCheck size={18} />
+                            Mock Interview for {currentContext.title}
+                        </button>
+                    </div>
+                )}
+
                 <form onSubmit={handleSend} style={{ padding: '20px', background: 'white', borderTop: '1px solid #f1f5f9', display: 'flex', gap: '12px' }}>
                     <div style={{ flex: 1, position: 'relative' }}>
                         <input
                             type="text"
-                            placeholder="Type your question..."
+                            placeholder={isInterviewMode ? "Type your answer..." : "Type your question..."}
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             style={{
@@ -168,11 +223,8 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
                                 padding: '12px 15px',
                                 borderRadius: '10px',
                                 outline: 'none',
-                                fontSize: '0.9rem',
-                                transition: 'border-color 0.2s'
+                                fontSize: '0.9rem'
                             }}
-                            onFocus={(e) => e.target.style.borderColor = '#2563eb'}
-                            onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
                         />
                     </div>
                     <button
@@ -187,11 +239,8 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'background 0.2s'
+                            cursor: 'pointer'
                         }}
-                        onMouseOver={(e) => e.currentTarget.style.background = '#1d4ed8'}
-                        onMouseOut={(e) => e.currentTarget.style.background = '#2563eb'}
                     >
                         <Send size={20} />
                     </button>
@@ -199,11 +248,11 @@ const CareerBot = ({ isOpen, setIsOpen }) => {
             </div>
 
             <style>{`
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+                @keyframes slideUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
         </div>
     );
 };

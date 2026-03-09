@@ -104,7 +104,7 @@ const ResumeGenerator = ({ job }) => {
     // ════════════════════════════════════════════════════
     // EDIT PANEL
     // ════════════════════════════════════════════════════
-    const EditPanel = () => (
+    const renderEditPanel = () => (
         <div style={{ padding: '20px', overflowY: 'auto', maxHeight: '75vh' }}>
 
             {/* ── 1. Personal Info ── */}
@@ -231,95 +231,98 @@ const ResumeGenerator = ({ job }) => {
     // ════════════════════════════════════════════════════
     // PREVIEW PANEL
     // ════════════════════════════════════════════════════
-    const PreviewPanel = () => (
+    const renderPreviewPanel = () => (
         <div style={{ overflowY: 'auto', maxHeight: '75vh', padding: '20px', background: '#f1f5f9' }}>
-            <div ref={targetRef} style={{
-                background: 'white', padding: '44px 48px', fontFamily: '"Inter", "Segoe UI", sans-serif',
-                color: '#1e293b', lineHeight: '1.6', fontSize: '0.88rem',
-                maxWidth: '760px', margin: '0 auto',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.1)', borderRadius: '4px'
-            }}>
-                {/* Header */}
-                <div style={{ textAlign: 'center', borderBottom: '2.5px solid #2563eb', paddingBottom: '16px', marginBottom: '20px' }}>
-                    <h1 style={{ margin: '0 0 6px', fontSize: '1.9rem', fontWeight: '800', color: '#0f172a' }}>
-                        {info.name || 'Your Name'}
-                    </h1>
-                    <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px', color: '#475569', fontSize: '0.8rem' }}>
-                        {info.email && <span>✉ {info.email}</span>}
-                        {info.phone && <span>📞 {info.phone}</span>}
-                        {info.location && <span>📍 {info.location}</span>}
-                        {info.linkedin && <span>🔗 {info.linkedin}</span>}
-                        {info.portfolio && <span>🌐 {info.portfolio}</span>}
+            <div style={{ overflowX: 'auto', width: '100%', paddingBottom: '20px' }}>
+                <div ref={targetRef} style={{
+                    background: 'white', padding: '44px 48px', fontFamily: '"Inter", "Segoe UI", sans-serif',
+                    color: '#1e293b', lineHeight: '1.6', fontSize: '14px',
+                    width: '800px', minWidth: '800px',
+                    margin: '0 auto', boxSizing: 'border-box',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.1)', borderRadius: '4px'
+                }}>
+                    {/* Header */}
+                    <div style={{ textAlign: 'center', borderBottom: '2.5px solid #2563eb', paddingBottom: '16px', marginBottom: '20px' }}>
+                        <h1 style={{ margin: '0 0 6px', fontSize: '1.9rem', fontWeight: '800', color: '#0f172a' }}>
+                            {info.name || 'Your Name'}
+                        </h1>
+                        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px', color: '#475569', fontSize: '0.8rem' }}>
+                            {info.email && <span>✉ {info.email}</span>}
+                            {info.phone && <span>📞 {info.phone}</span>}
+                            {info.location && <span>📍 {info.location}</span>}
+                            {info.linkedin && <span>🔗 {info.linkedin}</span>}
+                            {info.portfolio && <span>🌐 {info.portfolio}</span>}
+                        </div>
                     </div>
-                </div>
 
-                {/* Summary */}
-                {info.summary && (<section style={{ marginBottom: '18px' }}>
-                    <ResDivider label="Professional Summary" icon={<User size={13} />} />
-                    <p style={{ margin: 0, color: '#334155' }}>{info.summary}</p>
-                </section>)}
+                    {/* Summary */}
+                    {info.summary && (<section style={{ marginBottom: '18px' }}>
+                        <ResDivider label="Professional Summary" icon={<User size={13} />} />
+                        <p style={{ margin: 0, color: '#334155' }}>{info.summary}</p>
+                    </section>)}
 
-                {/* Skills */}
-                {skills.length > 0 && (<section style={{ marginBottom: '18px' }}>
-                    <ResDivider label="Core Skills" icon={<CheckCircle size={13} />} />
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                        {skills.map((s, i) => (
-                            <span key={i} style={{ background: '#eff6ff', color: '#1d4ed8', padding: '3px 11px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: '600', border: '1px solid #bfdbfe' }}>{s}</span>
-                        ))}
+                    {/* Skills */}
+                    {skills.length > 0 && (<section style={{ marginBottom: '18px' }}>
+                        <ResDivider label="Core Skills" icon={<CheckCircle size={13} />} />
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                            {skills.map((s, i) => (
+                                <span key={i} style={{ background: '#eff6ff', color: '#1d4ed8', padding: '3px 11px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: '600', border: '1px solid #bfdbfe' }}>{s}</span>
+                            ))}
+                        </div>
+                    </section>)}
+
+                    {/* Education */}
+                    {education.some(e => e.degree || e.school) && (
+                        <section style={{ marginBottom: '18px' }}>
+                            <ResDivider label="Education" icon={<GraduationCap size={13} />} />
+                            {education.map((edu, i) => (edu.degree || edu.school) && (
+                                <div key={i} style={{ marginBottom: '10px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <strong>{edu.degree || '—'}</strong>
+                                        <span style={{ color: '#64748b', fontSize: '0.82rem' }}>{edu.year}</span>
+                                    </div>
+                                    <div style={{ color: '#475569' }}>{edu.school}{edu.grade ? ` · ${edu.grade}` : ''}</div>
+                                </div>
+                            ))}
+                        </section>
+                    )}
+
+                    {/* Experience */}
+                    {experience.some(e => e.title || e.company) && (
+                        <section style={{ marginBottom: '18px' }}>
+                            <ResDivider label="Work Experience" icon={<Briefcase size={13} />} />
+                            {experience.map((exp, i) => (exp.title || exp.company) && (
+                                <div key={i} style={{ marginBottom: '12px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <strong>{exp.title}</strong>
+                                        <span style={{ color: '#64748b', fontSize: '0.82rem' }}>{exp.duration}</span>
+                                    </div>
+                                    <div style={{ color: '#475569', marginBottom: '3px' }}>{exp.company}</div>
+                                    {exp.description && <div style={{ color: '#334155', whiteSpace: 'pre-line' }}>{exp.description}</div>}
+                                </div>
+                            ))}
+                        </section>
+                    )}
+
+                    {/* Projects */}
+                    {projects.some(p => p.name || p.desc) && (
+                        <section style={{ marginBottom: '18px' }}>
+                            <ResDivider label="Projects" icon={<FolderOpen size={13} />} />
+                            {projects.map((proj, i) => (proj.name || proj.desc) && (
+                                <div key={i} style={{ marginBottom: '10px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                                        <strong>{proj.name}</strong>
+                                        {proj.link && <span style={{ fontSize: '0.78rem', color: '#2563eb' }}>{proj.link}</span>}
+                                    </div>
+                                    <p style={{ margin: '3px 0 0', color: '#334155' }}>{proj.desc}</p>
+                                </div>
+                            ))}
+                        </section>
+                    )}
+
+                    <div style={{ textAlign: 'center', fontSize: '0.68rem', color: '#cbd5e1', marginTop: '24px', borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
+                        Generated by CareerPath · {today}
                     </div>
-                </section>)}
-
-                {/* Education */}
-                {education.some(e => e.degree || e.school) && (
-                    <section style={{ marginBottom: '18px' }}>
-                        <ResDivider label="Education" icon={<GraduationCap size={13} />} />
-                        {education.map((edu, i) => (edu.degree || edu.school) && (
-                            <div key={i} style={{ marginBottom: '10px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>{edu.degree || '—'}</strong>
-                                    <span style={{ color: '#64748b', fontSize: '0.82rem' }}>{edu.year}</span>
-                                </div>
-                                <div style={{ color: '#475569' }}>{edu.school}{edu.grade ? ` · ${edu.grade}` : ''}</div>
-                            </div>
-                        ))}
-                    </section>
-                )}
-
-                {/* Experience */}
-                {experience.some(e => e.title || e.company) && (
-                    <section style={{ marginBottom: '18px' }}>
-                        <ResDivider label="Work Experience" icon={<Briefcase size={13} />} />
-                        {experience.map((exp, i) => (exp.title || exp.company) && (
-                            <div key={i} style={{ marginBottom: '12px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>{exp.title}</strong>
-                                    <span style={{ color: '#64748b', fontSize: '0.82rem' }}>{exp.duration}</span>
-                                </div>
-                                <div style={{ color: '#475569', marginBottom: '3px' }}>{exp.company}</div>
-                                {exp.description && <div style={{ color: '#334155', whiteSpace: 'pre-line' }}>{exp.description}</div>}
-                            </div>
-                        ))}
-                    </section>
-                )}
-
-                {/* Projects */}
-                {projects.some(p => p.name || p.desc) && (
-                    <section style={{ marginBottom: '18px' }}>
-                        <ResDivider label="Projects" icon={<FolderOpen size={13} />} />
-                        {projects.map((proj, i) => (proj.name || proj.desc) && (
-                            <div key={i} style={{ marginBottom: '10px' }}>
-                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-                                    <strong>{proj.name}</strong>
-                                    {proj.link && <span style={{ fontSize: '0.78rem', color: '#2563eb' }}>{proj.link}</span>}
-                                </div>
-                                <p style={{ margin: '3px 0 0', color: '#334155' }}>{proj.desc}</p>
-                            </div>
-                        ))}
-                    </section>
-                )}
-
-                <div style={{ textAlign: 'center', fontSize: '0.68rem', color: '#cbd5e1', marginTop: '24px', borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
-                    Generated by CareerPath · {today}
                 </div>
             </div>
         </div>
@@ -358,7 +361,7 @@ const ResumeGenerator = ({ job }) => {
             </div>
 
             {/* ── Content ── */}
-            {tab === 'edit' ? <EditPanel /> : <PreviewPanel />}
+            {tab === 'edit' ? renderEditPanel() : renderPreviewPanel()}
         </div>
     );
 };
